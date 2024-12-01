@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+    <style>
+        body{
+            background-color: #f2f2f2;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+        .row{
+            display:flex;
+            flex-direction: row;
+            width:100%;
+           
+        }
+        .border{
+            border: 1px solid grey;
+            border-radius:15px;
+            padding: 25px;
+            margin: 60px;
+            background-color: white;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            
+        }
+        .width{
+            width:25%;
+        }
+        .col{
+            margin: 3%;
+            display:flex;
+            flex-direction: column;
+            justify-items: center;
+            width:20%;
+        }
+        .bgGrey{
+            background-color: #e8e8e8;
+            border: 1px solid #b3b3b3;
+        }
+        .bold{
+            font-weight: 700;
+        }
+        input {
+            width:90%;
+            height: 25px;
+        }
+        .btn-select{
+            height:35px;
+            background-color: black;
+            color:#f2f2f2;
+            border-radius: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="border">
+        <div class="row">
+        <div class="width">
+            <p>Enter the sum:</p>
+            <input type="number" id="amount" style="width:60%" onchange="convert()" placeholder="5000">
+            <select id="currency" style="height: 30px; width:30%;" onchange="convert()">
+                <option  value="USD">USD</option>
+                <option value="KZT">KZT</option>
+                <option value="EUR">EUR</option>
+            </select>
+            
+        </div>
+
+        <div  class="width">
+            <p class="bold" >KZT(tenge)</p>
+            <input type="text" placeholder="-"  class="bgGrey" id="kzResult">
+
+        </div>
+        <div  class="width">
+            <p class="bold" ">USD(dollar)</p>
+            <input type="text" placeholder="-"  class="bgGrey" id="usResult">
+        </div>
+        <div class="width">
+            <p class="bold" >EUR(euro)</p>
+            <input type="text" placeholder="-"  class="bgGrey" id="euResult">
+        </div>
+
+    </div>
+    <div id="result" class="col">
+            <select id = "type" class="btn-select" onchange="convert()">
+                <option value="buy">Buy</option>
+                <option value="sell">Sell</option>
+        </select>
+    </div>
+
+    </div>
+    
+    
+    
+    
+
+    <script>
+        
+
+        function convert(){
+            let buyAndSell ={
+            USD: {buy: 429, sell: 431},
+            EUR: {buy: 507 , sell: 509}
+            };
+            console.log(buyAndSell.USD.buy);
+            console.log(buyAndSell.EUR.buy);
+
+            let amount = document.getElementById("amount").value;
+            let currency = document.getElementById("currency").value;
+            let type = document.getElementById("type").value;
+
+            let usdResult;
+            let eurResult;
+            let kztResult;
+
+            if(currency === "KZT"){
+                if(type=="buy"){
+                    usdResult = (amount/buyAndSell.USD.buy).toFixed(2);
+                    eurResult = (amount/buyAndSell.EUR.buy).toFixed(2);
+                }else{
+                    usdResult = (amount/buyAndSell.USD.sell).toFixed(2);
+                    eurResult = (amount/buyAndSell.EUR.sell).toFixed(2);
+                }
+                
+            }else if(currency =="USD"){
+                if(type=="buy"){
+                    kztResult = (amount * buyAndSell.USD.buy).toFixed(2);
+                    eurResult = ((amount * buyAndSell.USD.buy)/buyAndSell.EUR.buy).toFixed(2);
+                }else{
+                    kztResult = (amount * buyAndSell.USD.sell).toFixed(2);
+                    eurResult = ((amount * buyAndSell.USD.sell)/buyAndSell.EUR.sell).toFixed(2);
+                }
+            }else if(currency=="EUR"){
+                if(type=="buy"){
+                    kztResult = (amount * buyAndSell.EUR.buy).toFixed(2);
+                    usdResult = ((amount * buyAndSell.EUR.buy)/buyAndSell.USD.buy).toFixed(2);
+                }else{
+                    kztResult = (amount * buyAndSell.EUR.sell).toFixed(2);
+                    usdResult = ((amount * buyAndSell.EUR.sell)/buyAndSell.USD.sell).toFixed(2);
+                }
+            }
+
+            console.log(usdResult);
+            console.log(eurResult);
+            console.log(kztResult);
+            let kztInputElement = document.getElementById('kzResult');
+            let usdInputElement = document.getElementById('usResult');
+            let eurInputElement = document.getElementById('euResult');
+
+            if(kztResult>0){
+                kztInputElement.value = kztResult;
+            }else{
+                kztInputElement.value = null;
+            }
+            if(usdResult > 0){
+                usdInputElement.value = usdResult;
+            }else{
+                usdInputElement.value = null;
+            }
+            
+            if(eurResult>0){
+                eurInputElement.value = eurResult;   
+            }else{
+                eurInputElement.value = null;
+            }
+             
+        }
+
+    </script>
+</body>
+</html>
